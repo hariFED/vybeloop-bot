@@ -1,0 +1,21 @@
+{
+  "name": "vybeloop-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@api/vybe-api": "file:.api/apis/vybe-api",
+    "axios": "^1.8.4",
+    "dotenv": "^16.5.0",
+    "mongoose": "^8.13.2",
+    "node-cron": "^3.0.3",
+    "telegraf": "^4.16.3"
+  }
+}
