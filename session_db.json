@@ -1,0 +1,12 @@
+{
+  "sessions": [
+    {
+      "id": "2086551870:2086551870",
+      "data": {
+        "greeted": true,
+        "awaitingToken": false,
+        "awaitingWallet": false
+      }
+    }
+  ]
+}
