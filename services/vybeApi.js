@@ -25,5 +25,20 @@ const getWalletData = async (walletAddress) => {
     }
 }
 
+const getProgramData = async (programAddress) => {
+    try {
+        vybeApi.auth(API_KEY); // Authenticate with the API key
+        const response = await vybeApi.get_program({ programAddress: programAddress }); // Await the promise
+        console.log(response.data); // Log the data
+        return response.data; // Return the data
+    } catch (error) {
+        throw new Error('Failed to fetch program data: ' + error.message); // Include error details
+    }
+}
 
-module.exports = { getTokenData };
+
+module.exports = {
+    getTokenData,
+    getWalletData,
+    getProgramData
+};
