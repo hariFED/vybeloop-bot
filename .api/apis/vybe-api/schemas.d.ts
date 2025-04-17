@@ -6411,12 +6411,12 @@ declare const GetWalletTokens: {
                 readonly minAssetValue: {
                     readonly type: "string";
                     readonly $schema: "http://json-schema.org/draft-04/schema#";
-                    readonly description: "The minimum amount of total value in USD for an asset to be considered in the results. Defaults to 0.";
+                    readonly description: "The minimum amount of total value in USD for an asset to be considered in the results. Overrides `includeNoPriceBalance` Defaults to no limit.";
                 };
                 readonly maxAssetValue: {
                     readonly type: "string";
                     readonly $schema: "http://json-schema.org/draft-04/schema#";
-                    readonly description: "The maximum amount of total value in USD for an asset to be considered in the results. Defaults to no limit.";
+                    readonly description: "The maximum amount of total value in USD for an asset to be considered in the results. Overrides `includeNoPriceBalance` Defaults to no limit.";
                 };
                 readonly limit: {
                     readonly format: "int32";
@@ -6435,7 +6435,7 @@ declare const GetWalletTokens: {
                     readonly description: "The requested page.";
                 };
             };
-            readonly required: readonly ["minAssetValue", "maxAssetValue"];
+            readonly required: readonly [];
         }];
     };
     readonly response: {
@@ -6674,47 +6674,8 @@ declare const GetWalletTokensTs: {
                     readonly $schema: "http://json-schema.org/draft-04/schema#";
                     readonly description: "Number of previous days to include in the data (from today's date).\nAllowed values range from 1 to 30, default to 2 weeks (14 days)";
                 };
-                readonly onlyVerified: {
-                    readonly type: "boolean";
-                    readonly $schema: "http://json-schema.org/draft-04/schema#";
-                    readonly description: "Whether only verified tokens should be included in the results. Default is false.";
-                };
-                readonly oneDayTradeMinimum: {
-                    readonly format: "int64";
-                    readonly minimum: 0;
-                    readonly type: "integer";
-                    readonly maximum: 9223372036854776000;
-                    readonly $schema: "http://json-schema.org/draft-04/schema#";
-                    readonly description: "The minimum number of trades in the past 24 hours for a token to be considered in the results. Defaults to 100.";
-                };
-                readonly oneDayTradeVolumeMinimum: {
-                    readonly format: "int64";
-                    readonly minimum: 0;
-                    readonly type: "integer";
-                    readonly maximum: 9223372036854776000;
-                    readonly $schema: "http://json-schema.org/draft-04/schema#";
-                    readonly description: "The minimum amount of trade volume (in USD) in the past 24 hours for a token to be considered in the results. Defaults to 100,000.";
-                };
-                readonly holderMinimum: {
-                    readonly format: "int64";
-                    readonly minimum: 0;
-                    readonly type: "integer";
-                    readonly maximum: 9223372036854776000;
-                    readonly $schema: "http://json-schema.org/draft-04/schema#";
-                    readonly description: "The minimum number of holders for a token to be considered in the results. Defaults to 50.";
-                };
-                readonly minAssetValue: {
-                    readonly type: "string";
-                    readonly $schema: "http://json-schema.org/draft-04/schema#";
-                    readonly description: "The minimum amount of total value in USD for an asset to be considered in the results. Defaults to 0.";
-                };
-                readonly maxAssetValue: {
-                    readonly type: "string";
-                    readonly $schema: "http://json-schema.org/draft-04/schema#";
-                    readonly description: "The maximum amount of total value in USD for an asset to be considered in the results. Defaults to no limit.";
-                };
             };
-            readonly required: readonly ["minAssetValue", "maxAssetValue"];
+            readonly required: readonly [];
         }];
     };
     readonly response: {
@@ -7097,11 +7058,11 @@ declare const PostWalletTokensMany: {
                 readonly maximum: 2147483647;
             };
             readonly maxAssetValue: {
-                readonly description: "The maximum amount of total value in USD for an asset to be considered in the results. Defaults to no limit.";
+                readonly description: "The maximum amount of total value in USD for an asset to be considered in the results. Overrides `includeNoPriceBalance` Defaults to no limit.";
                 readonly type: "string";
             };
             readonly minAssetValue: {
-                readonly description: "The minimum amount of total value in USD for an asset to be considered in the results. Defaults to 0.";
+                readonly description: "The minimum amount of total value in USD for an asset to be considered in the results. Overrides `includeNoPriceBalance` Defaults to no limit.";
                 readonly type: "string";
             };
             readonly oneDayTradeMinimum: {
@@ -7146,7 +7107,7 @@ declare const PostWalletTokensMany: {
                 readonly type: "array";
             };
         };
-        readonly required: readonly ["wallets", "minAssetValue", "maxAssetValue"];
+        readonly required: readonly ["wallets"];
         readonly type: "object";
         readonly $schema: "http://json-schema.org/draft-04/schema#";
     };
@@ -7376,39 +7337,6 @@ declare const PostWalletTokensTsMany: {
                 readonly type: "integer";
                 readonly maximum: 2147483647;
             };
-            readonly holderMinimum: {
-                readonly description: "The minimum number of holders for a token to be considered in the results. Defaults to 50.";
-                readonly format: "int64";
-                readonly minimum: 0;
-                readonly type: "integer";
-                readonly maximum: 9223372036854776000;
-            };
-            readonly maxAssetValue: {
-                readonly description: "The maximum amount of total value in USD for an asset to be considered in the results. Defaults to no limit.";
-                readonly type: "string";
-            };
-            readonly minAssetValue: {
-                readonly description: "The minimum amount of total value in USD for an asset to be considered in the results. Defaults to 0.";
-                readonly type: "string";
-            };
-            readonly oneDayTradeMinimum: {
-                readonly description: "The minimum number of trades in the past 24 hours for a token to be considered in the results. Defaults to 100.";
-                readonly format: "int64";
-                readonly minimum: 0;
-                readonly type: "integer";
-                readonly maximum: 9223372036854776000;
-            };
-            readonly oneDayTradeVolumeMinimum: {
-                readonly description: "The minimum amount of trade volume (in USD) in the past 24 hours for a token to be considered in the results. Defaults to 100,000.";
-                readonly format: "int64";
-                readonly minimum: 0;
-                readonly type: "integer";
-                readonly maximum: 9223372036854776000;
-            };
-            readonly onlyVerified: {
-                readonly description: "Whether only verified tokens should be included in the results. Default is false.";
-                readonly type: "boolean";
-            };
             readonly wallets: {
                 readonly description: "Wallets to include in the returned results (max 10).";
                 readonly items: {
@@ -7418,7 +7346,7 @@ declare const PostWalletTokensTsMany: {
                 readonly type: "array";
             };
         };
-        readonly required: readonly ["wallets", "minAssetValue", "maxAssetValue"];
+        readonly required: readonly ["wallets"];
         readonly type: "object";
         readonly $schema: "http://json-schema.org/draft-04/schema#";
     };
@@ -7783,352 +7711,4 @@ declare const Ranking: {
         };
     };
 };
-declare const WebsocketRoute: {
-    readonly metadata: {
-        readonly allOf: readonly [{
-            readonly type: "object";
-            readonly properties: {
-                readonly trades: {
-                    readonly items: {
-                        readonly properties: {
-                            readonly authorityAddress: {
-                                readonly format: "pubkey";
-                                readonly type: "string";
-                            };
-                            readonly baseMintAddress: {
-                                readonly format: "pubkey";
-                                readonly type: "string";
-                            };
-                            readonly feePayer: {
-                                readonly format: "pubkey";
-                                readonly type: "string";
-                            };
-                            readonly marketId: {
-                                readonly format: "pubkey";
-                                readonly type: "string";
-                            };
-                            readonly programId: {
-                                readonly format: "pubkey";
-                                readonly type: "string";
-                            };
-                            readonly quoteMintAddress: {
-                                readonly format: "pubkey";
-                                readonly type: "string";
-                            };
-                            readonly tokenMintAddress: {
-                                readonly format: "pubkey";
-                                readonly type: "string";
-                            };
-                        };
-                        readonly type: "object";
-                    };
-                    readonly type: "array";
-                    readonly $schema: "http://json-schema.org/draft-04/schema#";
-                    readonly description: "Live trades stream";
-                };
-                readonly transfers: {
-                    readonly items: {
-                        readonly properties: {
-                            readonly feePayer: {
-                                readonly format: "pubkey";
-                                readonly type: "string";
-                            };
-                            readonly maxAmount: {
-                                readonly description: "Inclusive maximum of transfered amount\nCan be combined with [Self::min_amount]";
-                                readonly format: "int64";
-                                readonly minimum: 0;
-                                readonly type: "integer";
-                                readonly maximum: 9223372036854776000;
-                            };
-                            readonly minAmount: {
-                                readonly description: "Inclusive minimum of transfered amount\nCan be combined with [Self::max_amount]";
-                                readonly format: "int64";
-                                readonly minimum: 0;
-                                readonly type: "integer";
-                                readonly maximum: 9223372036854776000;
-                            };
-                            readonly programId: {
-                                readonly format: "pubkey";
-                                readonly type: "string";
-                            };
-                            readonly receiverAddress: {
-                                readonly format: "pubkey";
-                                readonly type: "string";
-                            };
-                            readonly receiverTokenAccount: {
-                                readonly format: "pubkey";
-                                readonly type: "string";
-                            };
-                            readonly senderAddress: {
-                                readonly format: "pubkey";
-                                readonly type: "string";
-                            };
-                            readonly senderTokenAccount: {
-                                readonly format: "pubkey";
-                                readonly type: "string";
-                            };
-                            readonly tokenMintAddress: {
-                                readonly format: "pubkey";
-                                readonly type: "string";
-                            };
-                        };
-                        readonly type: "object";
-                    };
-                    readonly type: "array";
-                    readonly $schema: "http://json-schema.org/draft-04/schema#";
-                    readonly description: "Live token transfers stream";
-                };
-                readonly oraclePrices: {
-                    readonly items: {
-                        readonly properties: {
-                            readonly priceFeedAccount: {
-                                readonly format: "pubkey";
-                                readonly type: "string";
-                            };
-                            readonly productAccount: {
-                                readonly format: "pubkey";
-                                readonly type: "string";
-                            };
-                        };
-                        readonly type: "object";
-                    };
-                    readonly type: "array";
-                    readonly $schema: "http://json-schema.org/draft-04/schema#";
-                    readonly description: "Live Pyth Oracle prices stream";
-                };
-                readonly tradePrices: {
-                    readonly items: {
-                        readonly properties: {
-                            readonly baseMintAddress: {
-                                readonly format: "pubkey";
-                                readonly type: "string";
-                            };
-                            readonly quoteMintAddress: {
-                                readonly format: "pubkey";
-                                readonly type: "string";
-                            };
-                        };
-                        readonly type: "object";
-                    };
-                    readonly type: "array";
-                    readonly $schema: "http://json-schema.org/draft-04/schema#";
-                    readonly description: "Trades based per-block average prices stream";
-                };
-            };
-            readonly required: readonly [];
-        }];
-    };
-    readonly response: {
-        readonly "201": {
-            readonly properties: {
-                readonly authorityAddress: {
-                    readonly description: "The public key of the signer who authorized the trade.";
-                    readonly type: "string";
-                };
-                readonly baseMintAddress: {
-                    readonly description: "The mint address of the base token involved in the trade.";
-                    readonly type: "string";
-                };
-                readonly baseSize: {
-                    readonly description: "The quantity of the base token involved in the trade.";
-                    readonly type: "string";
-                };
-                readonly blockTime: {
-                    readonly description: "The Unix timestamp at which the trade occurred on the blockchain.";
-                    readonly format: "int64";
-                    readonly type: "integer";
-                    readonly minimum: -9223372036854776000;
-                    readonly maximum: 9223372036854776000;
-                };
-                readonly fee: {
-                    readonly description: "The amount of fees paid for the trade.";
-                    readonly type: "string";
-                };
-                readonly feePayer: {
-                    readonly description: "The public key of the account responsible for paying the transaction fees.";
-                    readonly type: "string";
-                };
-                readonly iixOrdinal: {
-                    readonly description: "The location of the trade inner ix inside the transaction. 255 is returned if not applicable.";
-                    readonly format: "int32";
-                    readonly minimum: 0;
-                    readonly type: "integer";
-                    readonly maximum: 2147483647;
-                };
-                readonly interIxOrdinal: {
-                    readonly description: "The location of the trade inside an ix (in 2 hop swaps). 255 is returned if not applicable.";
-                    readonly format: "int32";
-                    readonly minimum: 0;
-                    readonly type: "integer";
-                    readonly maximum: 2147483647;
-                };
-                readonly ixOrdinal: {
-                    readonly description: "The location of the trade ix inside the transaction.";
-                    readonly format: "int32";
-                    readonly minimum: 0;
-                    readonly type: "integer";
-                    readonly maximum: 2147483647;
-                };
-                readonly marketId: {
-                    readonly description: "The identifier for the market pair, e.g., SOL/USDC, where the trade took place.";
-                    readonly type: "string";
-                };
-                readonly price: {
-                    readonly description: "The price of one unit of the base token, expressed in terms of the quote token.";
-                    readonly type: "string";
-                };
-                readonly programId: {
-                    readonly description: "The public key of the AMM or DEX program that facilitated the trade.";
-                    readonly type: "string";
-                };
-                readonly quoteMintAddress: {
-                    readonly description: "The mint address of the quote token used in the trade.";
-                    readonly type: "string";
-                };
-                readonly quoteSize: {
-                    readonly description: "The amount of the quote token exchanged in the trade.";
-                    readonly type: "string";
-                };
-                readonly signature: {
-                    readonly description: "The unique identifier of the transaction signature on the blockchain.";
-                    readonly type: "string";
-                };
-                readonly slot: {
-                    readonly description: "Slot of the trade";
-                    readonly format: "int64";
-                    readonly minimum: 0;
-                    readonly type: "integer";
-                    readonly maximum: 9223372036854776000;
-                };
-                readonly txIndex: {
-                    readonly description: "The transaction index of the trade.";
-                    readonly format: "int32";
-                    readonly type: "integer";
-                    readonly minimum: -2147483648;
-                    readonly maximum: 2147483647;
-                };
-            };
-            readonly required: readonly ["authorityAddress", "blockTime", "iixOrdinal", "baseMintAddress", "interIxOrdinal", "ixOrdinal", "marketId", "quoteMintAddress", "price", "programId", "signature", "slot", "txIndex", "fee", "feePayer", "baseSize", "quoteSize"];
-            readonly type: "object";
-            readonly $schema: "http://json-schema.org/draft-04/schema#";
-        };
-        readonly "202": {
-            readonly description: "User-facing Pyth price feed update";
-            readonly properties: {
-                readonly confidence: {
-                    readonly description: "Confidence interval of how close we think the true price is to the average.\nIt's influenced by both how sure each person quoting the price is, and how much they agree with each other.";
-                    readonly type: "string";
-                };
-                readonly emac1H: {
-                    readonly description: "Exponentially-weighted moving average confidence interval is a time-weighted average of the confidence interval";
-                    readonly type: "string";
-                };
-                readonly emap1H: {
-                    readonly description: "Exponentially-weighted moving average price is a time-weighted average of the aggregate price";
-                    readonly type: "string";
-                };
-                readonly lastUpdated: {
-                    readonly description: "The last updated time";
-                    readonly format: "int64";
-                    readonly type: "integer";
-                    readonly minimum: -9223372036854776000;
-                    readonly maximum: 9223372036854776000;
-                };
-                readonly price: {
-                    readonly description: "Price of asset expressed in USD";
-                    readonly type: "string";
-                };
-                readonly priceFeedAccount: {
-                    readonly format: "pubkey";
-                    readonly type: "string";
-                };
-                readonly validSlot: {
-                    readonly description: "The last valid slot";
-                    readonly format: "int64";
-                    readonly minimum: 0;
-                    readonly type: "integer";
-                    readonly maximum: 9223372036854776000;
-                };
-            };
-            readonly required: readonly ["priceFeedAccount", "lastUpdated", "validSlot", "price", "confidence", "emac1H", "emap1H"];
-            readonly type: "object";
-            readonly $schema: "http://json-schema.org/draft-04/schema#";
-        };
-        readonly "203": {
-            readonly properties: {
-                readonly amount: {
-                    readonly description: "The total number of tokens involved in the transaction.";
-                    readonly format: "int64";
-                    readonly minimum: 0;
-                    readonly type: "integer";
-                    readonly maximum: 9223372036854776000;
-                };
-                readonly blockTime: {
-                    readonly description: "The timestamp when the transaction was confirmed on the blockchain, in Unix time.";
-                    readonly format: "int64";
-                    readonly type: "integer";
-                    readonly minimum: -9223372036854776000;
-                    readonly maximum: 9223372036854776000;
-                };
-                readonly callingPrograms: {
-                    readonly description: "An array of all the programs that were utilized during the transaction If a specific program is used as a filter in the query, it may appear in the CallingPrograms array alongside other programs that were also part of the transaction.";
-                    readonly items: {
-                        readonly type: "string";
-                    };
-                    readonly type: "array";
-                };
-                readonly decimal: {
-                    readonly description: "The number of decimal places used for the token's smallest unit.";
-                    readonly format: "int64";
-                    readonly minimum: 0;
-                    readonly type: "integer";
-                    readonly maximum: 9223372036854776000;
-                };
-                readonly feePayer: {
-                    readonly description: "The public key of the account responsible for paying the transaction fees.";
-                    readonly type: "string";
-                };
-                readonly id: {
-                    readonly description: "Unique identifier for the transaction.";
-                    readonly format: "binary";
-                    readonly type: "string";
-                };
-                readonly mintAddress: {
-                    readonly description: "The public key of the token's mint, specifying the token type involved in the transaction.";
-                    readonly type: "string";
-                };
-                readonly receiverAddress: {
-                    readonly description: "The public key of the account receiving the tokens.";
-                    readonly type: "string";
-                };
-                readonly receiverTokenAccount: {
-                    readonly description: "The public key of the specific token account of the receiver.";
-                    readonly type: "string";
-                };
-                readonly senderAddress: {
-                    readonly description: "The public key of the account sending the tokens.";
-                    readonly type: "string";
-                };
-                readonly senderTokenAccount: {
-                    readonly description: "The public key of the specific token account of the sender.";
-                    readonly type: "string";
-                };
-                readonly signature: {
-                    readonly description: "The cryptographic signature that uniquely identifies the transaction on the blockchain.";
-                    readonly type: "string";
-                };
-                readonly slot: {
-                    readonly description: "The slot number in which the transaction was processed on the Solana blockchain, helping to pinpoint the exact sequence of events.";
-                    readonly format: "int64";
-                    readonly minimum: 0;
-                    readonly type: "integer";
-                    readonly maximum: 9223372036854776000;
-                };
-            };
-            readonly required: readonly ["signature", "callingPrograms", "senderAddress", "mintAddress", "feePayer", "decimal", "amount", "slot", "blockTime", "id"];
-            readonly type: "object";
-            readonly $schema: "http://json-schema.org/draft-04/schema#";
-        };
-    };
-};
-export { GetCollectionOwners, GetKnownAccounts, GetKnownProgramAccounts, GetMarketFilteredOhlcv, GetMarkets, GetPairTradeOhlcvProgram, GetProgram, GetProgramActiveUsers, GetProgramActiveUsersCount, GetProgramInstructionsCount, GetProgramTransactionsCount, GetProgramTvl, GetPrograms, GetProgramsList, GetPythPrice, GetPythPriceOhlc, GetPythPriceProductPairs, GetPythPriceTs, GetPythProduct, GetTokenDetails, GetTokenHoldersTimeSeries, GetTokenInstructionNames, GetTokenTradeOhlc, GetTokenTransfers, GetTokenVolumeTimeSeries, GetTokensSummary, GetTopHolders, GetTradeDataProgram, GetWalletNfts, GetWalletPnl, GetWalletTokens, GetWalletTokensTs, PostWalletNftsMany, PostWalletTokensMany, PostWalletTokensTsMany, Ranking, WebsocketRoute };
+export { GetCollectionOwners, GetKnownAccounts, GetKnownProgramAccounts, GetMarketFilteredOhlcv, GetMarkets, GetPairTradeOhlcvProgram, GetProgram, GetProgramActiveUsers, GetProgramActiveUsersCount, GetProgramInstructionsCount, GetProgramTransactionsCount, GetProgramTvl, GetPrograms, GetProgramsList, GetPythPrice, GetPythPriceOhlc, GetPythPriceProductPairs, GetPythPriceTs, GetPythProduct, GetTokenDetails, GetTokenHoldersTimeSeries, GetTokenInstructionNames, GetTokenTradeOhlc, GetTokenTransfers, GetTokenVolumeTimeSeries, GetTokensSummary, GetTopHolders, GetTradeDataProgram, GetWalletNfts, GetWalletPnl, GetWalletTokens, GetWalletTokensTs, PostWalletNftsMany, PostWalletTokensMany, PostWalletTokensTsMany, Ranking };

@@ -1,5 +1,6 @@
 const { Markup } = require('telegraf');
 const { getTokenData } = require('../services/vybeApi');
+const commonmenu = require('./commonmenu');
 
 // Temporary store for pending tokens per user (can be Redis/DB if needed)
 const pendingTokens = {};
@@ -10,7 +11,7 @@ module.exports = async function handleAddToken(ctx) {
 
     const tokenAddress = ctx.message.text.split(' ')[1];
     if (!tokenAddress) {
-        return ctx.reply('❗ Please provide a token address like: /addtoken <address>');
+        return ctx.reply('❗ Please provide a token address like: /addtoken <address> Example: /addtoken 0x1234567890abcdef1234567890abcdef12345678');
     }
 
     try {
@@ -42,6 +43,7 @@ module.exports = async function handleAddToken(ctx) {
     } catch (error) {
         console.error('Error fetching token data:', error);
         ctx.reply('⚠️ Sorry, couldn’t fetch that token. Try again.');
+        return commonmenu(ctx);
     }
 };
 

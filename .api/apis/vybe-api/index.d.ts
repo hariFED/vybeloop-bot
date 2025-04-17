@@ -101,6 +101,8 @@ declare class SDK {
      * Retrieve daily SPL token balances for a given account address in a time-series format.
      * This endpoint aggregates native SOL, staked SOL, and SPL token holdings, and provides
      * the value in both USD —offering a complete overview of the account’s token balances.
+     * The tokens included reflect the default filters of the token-balances endpoint: a trade
+     * minimum of 100, a trade volume minimum of 100,000 USD, and a holder minimum of 50.
      *
      * @summary Token Balances Time-series
      * @throws FetchError<400, types.GetWalletTokensTsResponse400> Invalid request
@@ -134,24 +136,14 @@ declare class SDK {
      * This endpoint aggregates native SOL, staked SOL, and SPL token holdings, and presents a
      * combined portfolio value in USD—offering a comprehensive overview of all specified
      * accounts.
+     * The tokens included reflect the default filters of the token-balances endpoint: a trade
+     * minimum of 100, a trade volume minimum of 100,000 USD, and a holder minimum of 50.
      *
      * @summary Token Multi-wallet Balances Time-series
      * @throws FetchError<400, types.PostWalletTokensTsManyResponse400> Invalid request
      * @throws FetchError<500, types.PostWalletTokensTsManyResponse500> Internal server error
      */
     post_wallet_tokens_ts_many(body: types.PostWalletTokensTsManyBodyParam): Promise<FetchResponse<200, types.PostWalletTokensTsManyResponse200>>;
-    /**
-     * This WebSocket streams real-time data for token trades, transfers, prices, and Pyth
-     * Oracle prices.
-     * To access each data type, send a configuration message in the following format:
-     * ```rust,ignore
-     * "type": "configure",
-     * "filters": { ... }
-     * ```
-     *
-     * @summary Real-Time Data WebSocket
-     */
-    websocket_route(metadata?: types.WebsocketRouteMetadataParam): Promise<FetchResponse<201, types.WebsocketRouteResponse201> | FetchResponse<202, types.WebsocketRouteResponse202> | FetchResponse<203, types.WebsocketRouteResponse203>>;
     /**
      * Get the addresses of wallets that own NFT in specified collection. The amount of owners
      * returned is limited to 1000 items.

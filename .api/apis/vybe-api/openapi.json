@@ -345,7 +345,14 @@
                 "ServerError",
                 "SlowClient",
                 "SlowQuery",
-                "InsufficientPermissions"
+                "InsufficientPermissions",
+                "NotFound",
+                "WebSocketHandshakeGetMethodRequired",
+                "WebSocketHandshakeNoWebsocketUpgrade",
+                "WebSocketHandshakeNoConnectionUpgrade",
+                "WebSocketHandshakeNoVersionHeader",
+                "WebSocketHandshakeUnsupportedVersion",
+                "WebSocketHandshakeBadWebsocketKey"
               ],
               "type": "string"
             }
@@ -4101,11 +4108,13 @@
             "type": "integer"
           },
           "maxAssetValue": {
-            "description": "The maximum amount of total value in USD for an asset to be considered in the results. Defaults to no limit.",
+            "description": "The maximum amount of total value in USD for an asset to be considered in the results. Overrides `includeNoPriceBalance` Defaults to no limit.",
+            "nullable": true,
             "type": "string"
           },
           "minAssetValue": {
-            "description": "The minimum amount of total value in USD for an asset to be considered in the results. Defaults to 0.",
+            "description": "The minimum amount of total value in USD for an asset to be considered in the results. Overrides `includeNoPriceBalance` Defaults to no limit.",
+            "nullable": true,
             "type": "string"
           },
           "oneDayTradeMinimum": {
@@ -4145,10 +4154,6 @@
             "type": "string"
           }
         },
-        "required": [
-          "minAssetValue",
-          "maxAssetValue"
-        ],
         "type": "object"
       },
       "AccountParamsTokensMany": {
@@ -4173,11 +4178,13 @@
             "type": "integer"
           },
           "maxAssetValue": {
-            "description": "The maximum amount of total value in USD for an asset to be considered in the results. Defaults to no limit.",
+            "description": "The maximum amount of total value in USD for an asset to be considered in the results. Overrides `includeNoPriceBalance` Defaults to no limit.",
+            "nullable": true,
             "type": "string"
           },
           "minAssetValue": {
-            "description": "The minimum amount of total value in USD for an asset to be considered in the results. Defaults to 0.",
+            "description": "The minimum amount of total value in USD for an asset to be considered in the results. Overrides `includeNoPriceBalance` Defaults to no limit.",
+            "nullable": true,
             "type": "string"
           },
           "oneDayTradeMinimum": {
@@ -4226,9 +4233,7 @@
           }
         },
         "required": [
-          "wallets",
-          "minAssetValue",
-          "maxAssetValue"
+          "wallets"
         ],
         "type": "object"
       },
@@ -4292,40 +4297,6 @@
             "nullable": true,
             "type": "integer"
           },
-          "holderMinimum": {
-            "description": "The minimum number of holders for a token to be considered in the results. Defaults to 50.",
-            "format": "int64",
-            "minimum": 0,
-            "nullable": true,
-            "type": "integer"
-          },
-          "maxAssetValue": {
-            "description": "The maximum amount of total value in USD for an asset to be considered in the results. Defaults to no limit.",
-            "type": "string"
-          },
-          "minAssetValue": {
-            "description": "The minimum amount of total value in USD for an asset to be considered in the results. Defaults to 0.",
-            "type": "string"
-          },
-          "oneDayTradeMinimum": {
-            "description": "The minimum number of trades in the past 24 hours for a token to be considered in the results. Defaults to 100.",
-            "format": "int64",
-            "minimum": 0,
-            "nullable": true,
-            "type": "integer"
-          },
-          "oneDayTradeVolumeMinimum": {
-            "description": "The minimum amount of trade volume (in USD) in the past 24 hours for a token to be considered in the results. Defaults to 100,000.",
-            "format": "int64",
-            "minimum": 0,
-            "nullable": true,
-            "type": "integer"
-          },
-          "onlyVerified": {
-            "description": "Whether only verified tokens should be included in the results. Default is false.",
-            "nullable": true,
-            "type": "boolean"
-          },
           "wallets": {
             "description": "Wallets to include in the returned results (max 10).",
             "items": {
@@ -4336,9 +4307,7 @@
           }
         },
         "required": [
-          "wallets",
-          "minAssetValue",
-          "maxAssetValue"
+          "wallets"
         ],
         "type": "object"
       },
@@ -4669,7 +4638,14 @@
           "ServerError",
           "SlowClient",
           "SlowQuery",
-          "InsufficientPermissions"
+          "InsufficientPermissions",
+          "NotFound",
+          "WebSocketHandshakeGetMethodRequired",
+          "WebSocketHandshakeNoWebsocketUpgrade",
+          "WebSocketHandshakeNoConnectionUpgrade",
+          "WebSocketHandshakeNoVersionHeader",
+          "WebSocketHandshakeUnsupportedVersion",
+          "WebSocketHandshakeBadWebsocketKey"
         ],
         "type": "string"
       },
@@ -9290,7 +9266,7 @@
       "url": "https://alpha.vybenetwork.com/terms"
     },
     "title": "Vybe API",
-    "version": "3.7.2"
+    "version": "3.8.6"
   },
   "openapi": "3.0.3",
   "paths": {
@@ -10753,7 +10729,7 @@
     },
     "/account/token-balance-ts/{ownerAddress}": {
       "get": {
-        "description": "Retrieve daily SPL token balances for a given account address in a time-series format.\nThis endpoint aggregates native SOL, staked SOL, and SPL token holdings, and provides the value in both USD —offering a complete overview of the account’s token balances.",
+        "description": "Retrieve daily SPL token balances for a given account address in a time-series format.\nThis endpoint aggregates native SOL, staked SOL, and SPL token holdings, and provides the value in both USD —offering a complete overview of the account’s token balances.\nThe tokens included reflect the default filters of the token-balances endpoint: a trade minimum of 100, a trade volume minimum of 100,000 USD, and a holder minimum of 50.",
         "operationId": "get_wallet_tokens_ts",
         "parameters": [
           {
@@ -10776,70 +10752,6 @@
               "minimum": 0,
               "nullable": true,
               "type": "integer"
-            }
-          },
-          {
-            "description": "Whether only verified tokens should be included in the results. Default is false.",
-            "in": "query",
-            "name": "onlyVerified",
-            "required": false,
-            "schema": {
-              "nullable": true,
-              "type": "boolean"
-            }
-          },
-          {
-            "description": "The minimum number of trades in the past 24 hours for a token to be considered in the results. Defaults to 100.",
-            "in": "query",
-            "name": "oneDayTradeMinimum",
-            "required": false,
-            "schema": {
-              "format": "int64",
-              "minimum": 0,
-              "nullable": true,
-              "type": "integer"
-            }
-          },
-          {
-            "description": "The minimum amount of trade volume (in USD) in the past 24 hours for a token to be considered in the results. Defaults to 100,000.",
-            "in": "query",
-            "name": "oneDayTradeVolumeMinimum",
-            "required": false,
-            "schema": {
-              "format": "int64",
-              "minimum": 0,
-              "nullable": true,
-              "type": "integer"
-            }
-          },
-          {
-            "description": "The minimum number of holders for a token to be considered in the results. Defaults to 50.",
-            "in": "query",
-            "name": "holderMinimum",
-            "required": false,
-            "schema": {
-              "format": "int64",
-              "minimum": 0,
-              "nullable": true,
-              "type": "integer"
-            }
-          },
-          {
-            "description": "The minimum amount of total value in USD for an asset to be considered in the results. Defaults to 0.",
-            "in": "query",
-            "name": "minAssetValue",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "The maximum amount of total value in USD for an asset to be considered in the results. Defaults to no limit.",
-            "in": "query",
-            "name": "maxAssetValue",
-            "required": true,
-            "schema": {
-              "type": "string"
             }
           }
         ],
@@ -11116,20 +11028,22 @@
             }
           },
           {
-            "description": "The minimum amount of total value in USD for an asset to be considered in the results. Defaults to 0.",
+            "description": "The minimum amount of total value in USD for an asset to be considered in the results. Overrides `includeNoPriceBalance` Defaults to no limit.",
             "in": "query",
             "name": "minAssetValue",
-            "required": true,
+            "required": false,
             "schema": {
+              "nullable": true,
               "type": "string"
             }
           },
           {
-            "description": "The maximum amount of total value in USD for an asset to be considered in the results. Defaults to no limit.",
+            "description": "The maximum amount of total value in USD for an asset to be considered in the results. Overrides `includeNoPriceBalance` Defaults to no limit.",
             "in": "query",
             "name": "maxAssetValue",
-            "required": true,
+            "required": false,
             "schema": {
+              "nullable": true,
               "type": "string"
             }
           },
@@ -11457,11 +11371,13 @@
                     "type": "integer"
                   },
                   "maxAssetValue": {
-                    "description": "The maximum amount of total value in USD for an asset to be considered in the results. Defaults to no limit.",
+                    "description": "The maximum amount of total value in USD for an asset to be considered in the results. Overrides `includeNoPriceBalance` Defaults to no limit.",
+                    "nullable": true,
                     "type": "string"
                   },
                   "minAssetValue": {
-                    "description": "The minimum amount of total value in USD for an asset to be considered in the results. Defaults to 0.",
+                    "description": "The minimum amount of total value in USD for an asset to be considered in the results. Overrides `includeNoPriceBalance` Defaults to no limit.",
+                    "nullable": true,
                     "type": "string"
                   },
                   "oneDayTradeMinimum": {
@@ -11510,9 +11426,7 @@
                   }
                 },
                 "required": [
-                  "wallets",
-                  "minAssetValue",
-                  "maxAssetValue"
+                  "wallets"
                 ],
                 "type": "object"
               }
@@ -11796,7 +11710,7 @@
     },
     "/account/token-balances-ts": {
       "post": {
-        "description": "Retrieve daily SPL token balances for multiple account addresses in a time-series format.\nThis endpoint aggregates native SOL, staked SOL, and SPL token holdings, and presents a combined portfolio value in USD—offering a comprehensive overview of all specified accounts.",
+        "description": "Retrieve daily SPL token balances for multiple account addresses in a time-series format.\nThis endpoint aggregates native SOL, staked SOL, and SPL token holdings, and presents a combined portfolio value in USD—offering a comprehensive overview of all specified accounts.\nThe tokens included reflect the default filters of the token-balances endpoint: a trade minimum of 100, a trade volume minimum of 100,000 USD, and a holder minimum of 50.",
         "operationId": "post_wallet_tokens_ts_many",
         "requestBody": {
           "content": {
@@ -11810,40 +11724,6 @@
                     "nullable": true,
                     "type": "integer"
                   },
-                  "holderMinimum": {
-                    "description": "The minimum number of holders for a token to be considered in the results. Defaults to 50.",
-                    "format": "int64",
-                    "minimum": 0,
-                    "nullable": true,
-                    "type": "integer"
-                  },
-                  "maxAssetValue": {
-                    "description": "The maximum amount of total value in USD for an asset to be considered in the results. Defaults to no limit.",
-                    "type": "string"
-                  },
-                  "minAssetValue": {
-                    "description": "The minimum amount of total value in USD for an asset to be considered in the results. Defaults to 0.",
-                    "type": "string"
-                  },
-                  "oneDayTradeMinimum": {
-                    "description": "The minimum number of trades in the past 24 hours for a token to be considered in the results. Defaults to 100.",
-                    "format": "int64",
-                    "minimum": 0,
-                    "nullable": true,
-                    "type": "integer"
-                  },
-                  "oneDayTradeVolumeMinimum": {
-                    "description": "The minimum amount of trade volume (in USD) in the past 24 hours for a token to be considered in the results. Defaults to 100,000.",
-                    "format": "int64",
-                    "minimum": 0,
-                    "nullable": true,
-                    "type": "integer"
-                  },
-                  "onlyVerified": {
-                    "description": "Whether only verified tokens should be included in the results. Default is false.",
-                    "nullable": true,
-                    "type": "boolean"
-                  },
                   "wallets": {
                     "description": "Wallets to include in the returned results (max 10).",
                     "items": {
@@ -11854,9 +11734,7 @@
                   }
                 },
                 "required": [
-                  "wallets",
-                  "minAssetValue",
-                  "maxAssetValue"
+                  "wallets"
                 ],
                 "type": "object"
               }
@@ -12042,514 +11920,6 @@
         "summary": "Token Multi-wallet Balances Time-series",
         "tags": [
           "account"
-        ]
-      }
-    },
-    "/live": {
-      "get": {
-        "description": "This WebSocket streams real-time data for token trades, transfers, prices, and Pyth Oracle prices.\nTo access each data type, send a configuration message in the following format:\n```rust,ignore\n\"type\": \"configure\",\n\"filters\": { ... }\n```",
-        "operationId": "websocket_route",
-        "parameters": [
-          {
-            "description": "Live trades stream",
-            "in": "query",
-            "name": "trades",
-            "required": false,
-            "schema": {
-              "items": {
-                "properties": {
-                  "authorityAddress": {
-                    "allOf": [
-                      {
-                        "format": "pubkey",
-                        "type": "string"
-                      }
-                    ],
-                    "nullable": true
-                  },
-                  "baseMintAddress": {
-                    "allOf": [
-                      {
-                        "format": "pubkey",
-                        "type": "string"
-                      }
-                    ],
-                    "nullable": true
-                  },
-                  "feePayer": {
-                    "allOf": [
-                      {
-                        "format": "pubkey",
-                        "type": "string"
-                      }
-                    ],
-                    "nullable": true
-                  },
-                  "marketId": {
-                    "allOf": [
-                      {
-                        "format": "pubkey",
-                        "type": "string"
-                      }
-                    ],
-                    "nullable": true
-                  },
-                  "programId": {
-                    "allOf": [
-                      {
-                        "format": "pubkey",
-                        "type": "string"
-                      }
-                    ],
-                    "nullable": true
-                  },
-                  "quoteMintAddress": {
-                    "allOf": [
-                      {
-                        "format": "pubkey",
-                        "type": "string"
-                      }
-                    ],
-                    "nullable": true
-                  },
-                  "tokenMintAddress": {
-                    "allOf": [
-                      {
-                        "format": "pubkey",
-                        "type": "string"
-                      }
-                    ],
-                    "nullable": true
-                  }
-                },
-                "type": "object"
-              },
-              "nullable": true,
-              "type": "array"
-            }
-          },
-          {
-            "description": "Live token transfers stream",
-            "in": "query",
-            "name": "transfers",
-            "required": false,
-            "schema": {
-              "items": {
-                "properties": {
-                  "feePayer": {
-                    "allOf": [
-                      {
-                        "format": "pubkey",
-                        "type": "string"
-                      }
-                    ],
-                    "nullable": true
-                  },
-                  "maxAmount": {
-                    "description": "Inclusive maximum of transfered amount\nCan be combined with [Self::min_amount]",
-                    "format": "int64",
-                    "minimum": 0,
-                    "nullable": true,
-                    "type": "integer"
-                  },
-                  "minAmount": {
-                    "description": "Inclusive minimum of transfered amount\nCan be combined with [Self::max_amount]",
-                    "format": "int64",
-                    "minimum": 0,
-                    "nullable": true,
-                    "type": "integer"
-                  },
-                  "programId": {
-                    "allOf": [
-                      {
-                        "format": "pubkey",
-                        "type": "string"
-                      }
-                    ],
-                    "nullable": true
-                  },
-                  "receiverAddress": {
-                    "allOf": [
-                      {
-                        "format": "pubkey",
-                        "type": "string"
-                      }
-                    ],
-                    "nullable": true
-                  },
-                  "receiverTokenAccount": {
-                    "allOf": [
-                      {
-                        "format": "pubkey",
-                        "type": "string"
-                      }
-                    ],
-                    "nullable": true
-                  },
-                  "senderAddress": {
-                    "allOf": [
-                      {
-                        "format": "pubkey",
-                        "type": "string"
-                      }
-                    ],
-                    "nullable": true
-                  },
-                  "senderTokenAccount": {
-                    "allOf": [
-                      {
-                        "format": "pubkey",
-                        "type": "string"
-                      }
-                    ],
-                    "nullable": true
-                  },
-                  "tokenMintAddress": {
-                    "allOf": [
-                      {
-                        "format": "pubkey",
-                        "type": "string"
-                      }
-                    ],
-                    "nullable": true
-                  }
-                },
-                "type": "object"
-              },
-              "nullable": true,
-              "type": "array"
-            }
-          },
-          {
-            "description": "Live Pyth Oracle prices stream",
-            "in": "query",
-            "name": "oraclePrices",
-            "required": false,
-            "schema": {
-              "items": {
-                "properties": {
-                  "priceFeedAccount": {
-                    "allOf": [
-                      {
-                        "format": "pubkey",
-                        "type": "string"
-                      }
-                    ],
-                    "nullable": true
-                  },
-                  "productAccount": {
-                    "allOf": [
-                      {
-                        "format": "pubkey",
-                        "type": "string"
-                      }
-                    ],
-                    "nullable": true
-                  }
-                },
-                "type": "object"
-              },
-              "nullable": true,
-              "type": "array"
-            }
-          },
-          {
-            "description": "Trades based per-block average prices stream",
-            "in": "query",
-            "name": "tradePrices",
-            "required": false,
-            "schema": {
-              "items": {
-                "properties": {
-                  "baseMintAddress": {
-                    "allOf": [
-                      {
-                        "format": "pubkey",
-                        "type": "string"
-                      }
-                    ],
-                    "nullable": true
-                  },
-                  "quoteMintAddress": {
-                    "allOf": [
-                      {
-                        "format": "pubkey",
-                        "type": "string"
-                      }
-                    ],
-                    "nullable": true
-                  }
-                },
-                "type": "object"
-              },
-              "nullable": true,
-              "type": "array"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "authorityAddress": {
-                      "description": "The public key of the signer who authorized the trade.",
-                      "type": "string"
-                    },
-                    "baseMintAddress": {
-                      "description": "The mint address of the base token involved in the trade.",
-                      "type": "string"
-                    },
-                    "baseSize": {
-                      "description": "The quantity of the base token involved in the trade.",
-                      "type": "string"
-                    },
-                    "blockTime": {
-                      "description": "The Unix timestamp at which the trade occurred on the blockchain.",
-                      "format": "int64",
-                      "type": "integer"
-                    },
-                    "fee": {
-                      "description": "The amount of fees paid for the trade.",
-                      "type": "string"
-                    },
-                    "feePayer": {
-                      "description": "The public key of the account responsible for paying the transaction fees.",
-                      "type": "string"
-                    },
-                    "iixOrdinal": {
-                      "description": "The location of the trade inner ix inside the transaction. 255 is returned if not applicable.",
-                      "format": "int32",
-                      "minimum": 0,
-                      "type": "integer"
-                    },
-                    "interIxOrdinal": {
-                      "description": "The location of the trade inside an ix (in 2 hop swaps). 255 is returned if not applicable.",
-                      "format": "int32",
-                      "minimum": 0,
-                      "type": "integer"
-                    },
-                    "ixOrdinal": {
-                      "description": "The location of the trade ix inside the transaction.",
-                      "format": "int32",
-                      "minimum": 0,
-                      "type": "integer"
-                    },
-                    "marketId": {
-                      "description": "The identifier for the market pair, e.g., SOL/USDC, where the trade took place.",
-                      "type": "string"
-                    },
-                    "price": {
-                      "description": "The price of one unit of the base token, expressed in terms of the quote token.",
-                      "type": "string"
-                    },
-                    "programId": {
-                      "description": "The public key of the AMM or DEX program that facilitated the trade.",
-                      "type": "string"
-                    },
-                    "quoteMintAddress": {
-                      "description": "The mint address of the quote token used in the trade.",
-                      "type": "string"
-                    },
-                    "quoteSize": {
-                      "description": "The amount of the quote token exchanged in the trade.",
-                      "type": "string"
-                    },
-                    "signature": {
-                      "description": "The unique identifier of the transaction signature on the blockchain.",
-                      "type": "string"
-                    },
-                    "slot": {
-                      "description": "Slot of the trade",
-                      "format": "int64",
-                      "minimum": 0,
-                      "type": "integer"
-                    },
-                    "txIndex": {
-                      "description": "The transaction index of the trade.",
-                      "format": "int32",
-                      "type": "integer"
-                    }
-                  },
-                  "required": [
-                    "authorityAddress",
-                    "blockTime",
-                    "iixOrdinal",
-                    "baseMintAddress",
-                    "interIxOrdinal",
-                    "ixOrdinal",
-                    "marketId",
-                    "quoteMintAddress",
-                    "price",
-                    "programId",
-                    "signature",
-                    "slot",
-                    "txIndex",
-                    "fee",
-                    "feePayer",
-                    "baseSize",
-                    "quoteSize"
-                  ],
-                  "type": "object"
-                }
-              }
-            },
-            "description": "Real-time Trades"
-          },
-          "202": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "description": "User-facing Pyth price feed update",
-                  "properties": {
-                    "confidence": {
-                      "description": "Confidence interval of how close we think the true price is to the average.\nIt's influenced by both how sure each person quoting the price is, and how much they agree with each other.",
-                      "type": "string"
-                    },
-                    "emac1H": {
-                      "description": "Exponentially-weighted moving average confidence interval is a time-weighted average of the confidence interval",
-                      "type": "string"
-                    },
-                    "emap1H": {
-                      "description": "Exponentially-weighted moving average price is a time-weighted average of the aggregate price",
-                      "type": "string"
-                    },
-                    "lastUpdated": {
-                      "description": "The last updated time",
-                      "format": "int64",
-                      "type": "integer"
-                    },
-                    "price": {
-                      "description": "Price of asset expressed in USD",
-                      "type": "string"
-                    },
-                    "priceFeedAccount": {
-                      "format": "pubkey",
-                      "type": "string"
-                    },
-                    "validSlot": {
-                      "description": "The last valid slot",
-                      "format": "int64",
-                      "minimum": 0,
-                      "type": "integer"
-                    }
-                  },
-                  "required": [
-                    "priceFeedAccount",
-                    "lastUpdated",
-                    "validSlot",
-                    "price",
-                    "confidence",
-                    "emac1H",
-                    "emap1H"
-                  ],
-                  "type": "object"
-                }
-              }
-            },
-            "description": "Pyth Oracle Price Updates"
-          },
-          "203": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "amount": {
-                      "description": "The total number of tokens involved in the transaction.",
-                      "format": "int64",
-                      "minimum": 0,
-                      "type": "integer"
-                    },
-                    "blockTime": {
-                      "description": "The timestamp when the transaction was confirmed on the blockchain, in Unix time.",
-                      "format": "int64",
-                      "type": "integer"
-                    },
-                    "callingPrograms": {
-                      "description": "An array of all the programs that were utilized during the transaction If a specific program is used as a filter in the query, it may appear in the CallingPrograms array alongside other programs that were also part of the transaction.",
-                      "items": {
-                        "type": "string"
-                      },
-                      "type": "array"
-                    },
-                    "decimal": {
-                      "description": "The number of decimal places used for the token's smallest unit.",
-                      "format": "int64",
-                      "minimum": 0,
-                      "type": "integer"
-                    },
-                    "feePayer": {
-                      "description": "The public key of the account responsible for paying the transaction fees.",
-                      "type": "string"
-                    },
-                    "id": {
-                      "description": "Unique identifier for the transaction.",
-                      "format": "binary",
-                      "type": "string"
-                    },
-                    "mintAddress": {
-                      "description": "The public key of the token's mint, specifying the token type involved in the transaction.",
-                      "type": "string"
-                    },
-                    "receiverAddress": {
-                      "description": "The public key of the account receiving the tokens.",
-                      "nullable": true,
-                      "type": "string"
-                    },
-                    "receiverTokenAccount": {
-                      "description": "The public key of the specific token account of the receiver.",
-                      "nullable": true,
-                      "type": "string"
-                    },
-                    "senderAddress": {
-                      "description": "The public key of the account sending the tokens.",
-                      "type": "string"
-                    },
-                    "senderTokenAccount": {
-                      "description": "The public key of the specific token account of the sender.",
-                      "nullable": true,
-                      "type": "string"
-                    },
-                    "signature": {
-                      "description": "The cryptographic signature that uniquely identifies the transaction on the blockchain.",
-                      "type": "string"
-                    },
-                    "slot": {
-                      "description": "The slot number in which the transaction was processed on the Solana blockchain, helping to pinpoint the exact sequence of events.",
-                      "format": "int64",
-                      "minimum": 0,
-                      "type": "integer"
-                    }
-                  },
-                  "required": [
-                    "signature",
-                    "callingPrograms",
-                    "senderAddress",
-                    "mintAddress",
-                    "feePayer",
-                    "decimal",
-                    "amount",
-                    "slot",
-                    "blockTime",
-                    "id"
-                  ],
-                  "type": "object"
-                }
-              }
-            },
-            "description": "Real-time Token Transfers"
-          },
-          "400": {
-            "description": "Invalid API key provided"
-          },
-          "401": {
-            "description": "Subscription key without access to Live data"
-          }
-        },
-        "summary": "Real-Time Data WebSocket",
-        "tags": [
-          "WebSockets"
         ]
       }
     },

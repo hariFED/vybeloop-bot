@@ -151,7 +151,3 @@ export type RankingResponse200 = FromSchema<typeof schemas.Ranking.response['200
 export type RankingResponse400 = FromSchema<typeof schemas.Ranking.response['400']>;
 export type RankingResponse404 = FromSchema<typeof schemas.Ranking.response['404']>;
 export type RankingResponse500 = FromSchema<typeof schemas.Ranking.response['500']>;
-export type WebsocketRouteMetadataParam = FromSchema<typeof schemas.WebsocketRoute.metadata>;
-export type WebsocketRouteResponse201 = FromSchema<typeof schemas.WebsocketRoute.response['201']>;
-export type WebsocketRouteResponse202 = FromSchema<typeof schemas.WebsocketRoute.response['202']>;
-export type WebsocketRouteResponse203 = FromSchema<typeof schemas.WebsocketRoute.response['203']>;

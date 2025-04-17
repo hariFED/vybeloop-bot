@@ -5,7 +5,8 @@
       "data": {
         "greeted": true,
         "awaitingToken": false,
-        "awaitingWallet": false
+        "awaitingWallet": false,
+        "awaitingProgram": false
       }
     }
   ]
