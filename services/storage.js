@@ -41,4 +41,22 @@ const storeUserPreference = async (userId, type, value) => {
     }
 };
 
-module.exports = { getUserPreferences, storeUserPreference };
+
+const removeUserPreference = async (userId, type, value) => {
+    try {
+        const user = await User.findOne({ telegramId: userId });
+
+        if (!user || !user[type]) return { notFound: true };
+
+        user[type] = user[type].filter((item) => item !== value);
+        await user.save();
+
+        return { success: true };
+    } catch (error) {
+        console.error('Error in removeUserPreference:', error);
+        return { error };
+    }
+};
+
+
+module.exports = { getUserPreferences, storeUserPreference, removeUserPreference };

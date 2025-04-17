@@ -8,7 +8,7 @@ var openapi_json_1 = __importDefault(require("./openapi.json"));
 var SDK = /** @class */ (function () {
     function SDK() {
         this.spec = oas_1.default.init(openapi_json_1.default);
-        this.core = new core_1.default(this.spec, 'vybe-api/3.7.2 (api/6.1.3)');
+        this.core = new core_1.default(this.spec, 'vybe-api/3.8.6 (api/6.1.3)');
     }
     /**
      * Optionally configure various options that the SDK allows.
@@ -126,6 +126,8 @@ var SDK = /** @class */ (function () {
      * Retrieve daily SPL token balances for a given account address in a time-series format.
      * This endpoint aggregates native SOL, staked SOL, and SPL token holdings, and provides
      * the value in both USD —offering a complete overview of the account’s token balances.
+     * The tokens included reflect the default filters of the token-balances endpoint: a trade
+     * minimum of 100, a trade volume minimum of 100,000 USD, and a holder minimum of 50.
      *
      * @summary Token Balances Time-series
      * @throws FetchError<400, types.GetWalletTokensTsResponse400> Invalid request
@@ -165,6 +167,8 @@ var SDK = /** @class */ (function () {
      * This endpoint aggregates native SOL, staked SOL, and SPL token holdings, and presents a
      * combined portfolio value in USD—offering a comprehensive overview of all specified
      * accounts.
+     * The tokens included reflect the default filters of the token-balances endpoint: a trade
+     * minimum of 100, a trade volume minimum of 100,000 USD, and a holder minimum of 50.
      *
      * @summary Token Multi-wallet Balances Time-series
      * @throws FetchError<400, types.PostWalletTokensTsManyResponse400> Invalid request
@@ -172,20 +176,6 @@ var SDK = /** @class */ (function () {
      */
     SDK.prototype.post_wallet_tokens_ts_many = function (body) {
         return this.core.fetch('/account/token-balances-ts', 'post', body);
-    };
-    /**
-     * This WebSocket streams real-time data for token trades, transfers, prices, and Pyth
-     * Oracle prices.
-     * To access each data type, send a configuration message in the following format:
-     * ```rust,ignore
-     * "type": "configure",
-     * "filters": { ... }
-     * ```
-     *
-     * @summary Real-Time Data WebSocket
-     */
-    SDK.prototype.websocket_route = function (metadata) {
-        return this.core.fetch('/live', 'get', metadata);
     };
     /**
      * Get the addresses of wallets that own NFT in specified collection. The amount of owners

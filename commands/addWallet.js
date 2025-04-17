@@ -8,6 +8,7 @@ module.exports = async function handleWalletToken(ctx) {
     }
 
     try {
+        await ctx.sendChatAction('typing');
         const walletData = await getWalletData(walletAddress);
         const result = await storeUserPreference(ctx.from.id, 'wallets', walletAddress);
 

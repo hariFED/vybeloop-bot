@@ -21,12 +21,14 @@ const start = require('./commands/start');
 const handleAddToken = require('./commands/addToken');
 const handleAddWallet = require('./commands/addWallet');
 const handlemyfeed = require('./commands/myFeed');
+const handleAddProgram = require('./commands/addProgram');
 
 // Register command handlers (✅ outside of any listener)
 bot.start(start);
 bot.command('addtoken', handleAddToken);
 bot.command('addwallet', handleAddWallet);
 bot.command('myfeed', handlemyfeed);
+bot.command('addprogram', handleAddProgram)
 
 // Handle plain text messages (for sessions like awaitingToken/Wallet)
 bot.on('text', async (ctx) => {
@@ -50,6 +52,13 @@ bot.on('text', async (ctx) => {
         ctx.message.text = `/addwallet ${ctx.message.text}`;
         return handleAddWallet(ctx);
     }
+
+    if (ctx.session.awaitingProgram) {
+        ctx.session.awaitingProgram = false;
+        ctx.message.text = `/addprogram ${ctx.message.text}`;
+        return handleAddProgram(ctx);
+    }
+
 
     ctx.reply("❓ I didn't understand that. Use /start or click a menu button.");
 });
