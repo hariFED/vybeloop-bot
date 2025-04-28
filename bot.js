@@ -68,4 +68,17 @@ bot.on('text', async (ctx) => {
     await connectDB();
     bot.launch();
     console.log('🤖 VybeLoop is running...');
+
+    const express = require('express');
+    const app = express();
+    const PORT = process.env.PORT || 3000;
+
+    app.get('/', (req, res) => {
+        res.send('🤖 VybeLoop bot is running!');
+    });
+
+    app.listen(PORT, () => {
+        console.log(`🌐 Web server listening on port ${PORT}`);
+    });
 })();
+
