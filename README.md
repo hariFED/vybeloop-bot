@@ -1,6 +1,8 @@
 
 # 🤖 VybeLoop Bot
 
+[![Watch the demo](https://img.youtube.com/vi/cIxCeMB8wMc/hqdefault.jpg)](https://youtu.be/cIxCeMB8wMc)
+
 Welcome to **VybeLoop**, your personalized on-chain insights companion on Telegram powered by **Vybe APIs**.  
 Track wallets, tokens, and programs effortlessly—right inside Telegram.
 
