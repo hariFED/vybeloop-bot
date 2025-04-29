@@ -94,13 +94,22 @@ vybeloop-bot/
 │   ├── addToken.js
 │   ├── addWallet.js
 │   ├── addProgram.js
-│   └── myFeed.js
+│   ├── myFeed.js
+│   ├── start.js
+│   └── stop.js
 ├── menu/               # Menu logic
 │   └── menusetup.js
+├── models/
+│   └── User.js 
 ├── services/
-│   └── db.js           # MongoDB connection
+│   ├── db.js           # MongoDB connection
+│   ├── feedGenerator.js
+│   ├── storage.js      # Handles storage logic
+│   └── vybeApi.js      # Handles API logic
+|
 ├── session_db.json     # Local sessions
 ├── .env                # Environment variables
+├── .api                # Vybe API SDK
 └── package.json
 ```
 
