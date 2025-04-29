@@ -77,6 +77,8 @@ npm install
 Create a file named `.env` with:
 ```
 TELEGRAM_BOT_TOKEN=your_bot_token_here
+MONGO_URI=your_mongodb_backend
+VYBE_API=your_vybe_api_key
 ```
 
 ### 4. Run the Bot
