@@ -119,7 +119,7 @@ vybeloop-bot/
 
 ## ❤️ Powered By
 
-- [Vybe APIs](https://vybe.network/)
+- [Vybe APIs](https://vybe.fyi/)
 - [Telegraf.js](https://telegraf.js.org/)
 - [MongoDB](https://mongodb.com)
 
