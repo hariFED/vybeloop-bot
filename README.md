@@ -11,6 +11,12 @@ Get personalized on-chain insights directly on Telegram!
 
 No setup needed. Just tap the link and start exploring token, wallet, and program analytics instantly!
 
+> 🟡 **Notice:**  
+> VybeLoop is currently hosted on [Render](https://render.com), which may cause a short delay in responses (cold starts).  
+> If you experience slow replies, please be patient.  
+> For a faster and more responsive experience, consider setting up the bot locally by following the instructions below.
+
+
 ## 🚀 What is VybeLoop?
 
 VybeLoop is a **Telegram bot** that delivers **real-time, personalized on-chain analytics**.  
