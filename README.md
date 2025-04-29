@@ -64,7 +64,7 @@ Your on-chain watchlist is delivered to you—no dashboard required.
 
 ### 1. Clone the Repository
 ```
-git clone https://github.com/yourusername/vybeloop-bot.git
+git clone https://github.com/hariFED/vybeloop-bot.git
 cd vybeloop-bot
 ```
 
