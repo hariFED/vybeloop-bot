@@ -52,7 +52,6 @@ module.exports = async function handlemyfeed(ctx) {
         }
     }
 
-    // Handle wallets and categories (Similar logic can be used for these)
     // You can extend this to include wallets, categories, or more metrics
     await ctx.deleteMessage(message.message_id);
     return ctx.reply(feed || 'No feed data available.', { parse_mode: 'Markdown' });

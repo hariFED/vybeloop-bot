@@ -4,6 +4,8 @@ const { Telegraf } = require('telegraf');
 const dotenv = require('dotenv');
 const connectDB = require('./services/db');
 const LocalSession = require('telegraf-session-local');
+const { buildFeedOnly } = require('./services/feedGenerator');
+const { getAllUsers } = require('./services/storage');
 
 dotenv.config();
 
@@ -61,6 +63,23 @@ bot.on('text', async (ctx) => {
 
 
     ctx.reply("❓ I didn't understand that. Use /start or click a menu button.");
+});
+
+
+app.get('/trigger-feed', async (req, res) => {
+    try {
+        const users = await getAllUsers();
+
+        for (let user of users) {
+            const feed = await buildFeedOnly(user.id);
+            await bot.telegram.sendMessage(user.id, feed, { parse_mode: 'Markdown' });
+        }
+
+        res.send('✅ Feed sent to all users');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('❌ Failed to send feed');
+    }
 });
 
 // Launch the bot after DB connection
