@@ -1,5 +1,18 @@
 const User = require('../models/User'); // Import the User model
 
+const getAllUsers = async () => {
+    try {
+        const users = await User.find({});
+        return users;
+    } catch (error) {
+        console.error('Error in getAllUsers:', error);
+        return [];
+    }
+};
+
+
+
+
 // Retrieve preferences for a user from MongoDB
 const getUserPreferences = async (userId) => {
     try {
@@ -59,4 +72,4 @@ const removeUserPreference = async (userId, type, value) => {
 };
 
 
-module.exports = { getUserPreferences, storeUserPreference, removeUserPreference };
+module.exports = { getUserPreferences, storeUserPreference, removeUserPreference, getAllUsers };
