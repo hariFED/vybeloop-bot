@@ -79,9 +79,14 @@ app.get('/trigger-feed', async (req, res) => {
         const users = await getAllUsers();
 
         for (let user of users) {
-            const feed = await buildFeedOnly(user.id);
-            await bot.telegram.sendMessage(user.id, feed, { parse_mode: 'Markdown' });
+            try {
+                const feed = await buildFeedOnly(user.telegramId); // ← Use telegramId, not _id
+                await bot.telegram.sendMessage(user.telegramId, feed, { parse_mode: 'Markdown' });
+            } catch (err) {
+                console.error(`❌ Failed to send feed to user ${user.telegramId}:`, err.description || err.message);
+            }
         }
+
 
         res.send('✅ Feed sent to all users');
     } catch (err) {
