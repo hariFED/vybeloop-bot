@@ -1,4 +1,5 @@
 // bot.js
+const express = require('express');
 
 const { Telegraf } = require('telegraf');
 const dotenv = require('dotenv');
@@ -6,11 +7,18 @@ const connectDB = require('./services/db');
 const LocalSession = require('telegraf-session-local');
 const { buildFeedOnly } = require('./services/feedGenerator');
 const { getAllUsers } = require('./services/storage');
+const app = express();
+const PORT = process.env.PORT || 3000;
+const cors = require('cors');
+
+
 
 dotenv.config();
 
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
 const { setupMenus } = require("./menu/menusetup");
+
+app.use(cors());
 
 // Session middleware (stored locally in JSON)
 bot.use(new LocalSession({ database: 'session_db.json' }).middleware());
@@ -88,9 +96,6 @@ app.get('/trigger-feed', async (req, res) => {
     bot.launch();
     console.log('🤖 VybeLoop is running...');
 
-    const express = require('express');
-    const app = express();
-    const PORT = process.env.PORT || 3000;
 
     app.get('/', (req, res) => {
         res.send('🤖 VybeLoop bot is running!');
